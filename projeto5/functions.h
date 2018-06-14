@@ -1,18 +1,23 @@
+#define LIMPA_TELA system("clear")
+
 typedef struct tree{
     int value;
-    struct tree *left;
     struct tree *right;
-} tree;
+    struct tree *left;
+}tree;
 
-tree *createsNew(int value);
-tree *loadTreeFromFile(char *archive_name);
-void showTree(tree *t);
-void isFull(tree *t);
-void searchValue(tree *t, int value);
-void getHeight(tree *t);
-void removeValue(tree *t, int value);
-void printInOrder(tree *t);
-void printPreOrder(tree *t);
-void printPosOrder(tree *t);
-void balanceTree(tree *t);
+FILE* openArchive(char *);
+void readNumbers(FILE *, int *);
+tree* createNewNode(int);
+tree* insert(tree *, tree *);
+tree* loadTreeFromFile(char *);
+void showTree(tree *);
+int isFull(tree *);
+void searchValue(tree *, int);
+int getHeight(tree *);
+void removeValue(tree *, int);
+void printInOrder(tree *);
+void printPreOrder(tree *);
+void printPostOrder(tree *);
+void balanceTree(tree *);
 void menu();
