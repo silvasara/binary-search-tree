@@ -1,5 +1,3 @@
-#define LIMPA_TELA system("clear")
-
 typedef struct tree{
     int value;
     struct tree *right;

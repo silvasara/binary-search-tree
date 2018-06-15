@@ -1,9 +1,8 @@
 #include <stdio_ext.h>
 #include "functions.c"
 
-int main(int argc, char *argv[]) {
-
-    int option, tamanho, valueSearched, valueDeleted;
+int main() {
+    int option; 
     char userFileName[100], *fileName;
     tree *raiz = NULL;
 
@@ -12,15 +11,12 @@ int main(int argc, char *argv[]) {
         scanf("%d", &option);
         switch(option){
             case 1:
-                LIMPA_TELA;
-
                 printf("Enter the name of the file: ");
                 __fpurge(stdin);
                 fgets(userFileName, 100, stdin);
-                tamanho = strlen(userFileName);
-                fileName = calloc((tamanho-1), sizeof(char));
-                strncpy(fileName, userFileName, (tamanho-1));
-                printf("fileName %s", fileName);
+                int size = strlen(userFileName);
+                fileName = calloc((size-1), sizeof(char));
+                strncpy(fileName, userFileName, (size-1));
                 raiz = loadTreeFromFile(fileName);
 
                 free(fileName);
@@ -28,12 +24,12 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 2:
-                LIMPA_TELA;
+                system("clear");
                 showTree(raiz);
                 break;
 
             case 3:
-                LIMPA_TELA;
+                system("clear");
                 if(isFull(raiz) == 1){
                     printf("Tree is full");
                 }
@@ -43,41 +39,43 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 4:
-                LIMPA_TELA;
+                system("clear");
                 printf("Enter the value you would like to search: ");
-                scanf("%d", &valueSearched);
-                searchValue(raiz, valueSearched);
+                int value;
+                scanf("%d", &value);
+                searchValue(raiz, value);
                 break;
 
             case 5:
-                LIMPA_TELA;
+                system("clear");
                 printf("Tree height: %d", getHeight(raiz));
                 break;
 
             case 6:
-                LIMPA_TELA;
+                system("clear");
                 printf("Enter the value you would like to delete: ");
-                scanf("%d", &valueDeleted);
-                removeValue(raiz, valueDeleted);
+                int valueD;
+                scanf("%d", &valueD);
+                removeValue(raiz, valueD);
                 break;
 
             case 7:
-                LIMPA_TELA;
+                system("clear");
                 printInOrder(raiz);
                 break;
 
             case 8:
-                LIMPA_TELA;
+                system("clear");
                 printPreOrder(raiz);
                 break;
 
             case 9:
-                LIMPA_TELA;
+                system("clear");
                 printPostOrder(raiz);
                 break;
 
             case 10:
-                LIMPA_TELA;
+                system("clear");
                 balanceTree(raiz);
                 break;
         }

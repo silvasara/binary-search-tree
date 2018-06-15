@@ -14,9 +14,9 @@ FILE *openArchive(char *fileName){
 
 void readNumbers(FILE *archive, int *fileNumbers){
     rewind(archive);
-    for(int i = 0; i < 10; i++){
+
+    for(int i = 0; i < 10; i++)
         fscanf(archive, "%d ", &fileNumbers[i]);
-    }
 }
 
 tree *createsNew(int fileNumber){
@@ -37,14 +37,15 @@ tree *insert(tree *root, tree *new){
         root->right = insert(root->right, new);
 
     return root;
-
 }
 
 tree *loadTreeFromFile(char *fileName){
     FILE *archive;
     tree *root = NULL, *new = NULL;
     int totalOfNumbersInFile, *fileNumbers = NULL;
+
     archive = openArchive(fileName);
+
     if(archive == NULL){
         printf("Cannot open file!");
         getchar();
@@ -62,7 +63,7 @@ tree *loadTreeFromFile(char *fileName){
     return root;
 }
 
-void showTree(tree* root){
+void showTree(tree *root){
     if (root != NULL){
         printf("%d ", root->value);
         showTree(root->left);
@@ -115,31 +116,33 @@ void searchValue(tree *root, int value){
 }
 
 int getHeight(tree *root){
-    int hEsq, hDir, altura;
+    int leftH, rightH, height;
+
     if (root == NULL){
         return 0;
     }
-    hEsq = getHeight(root->left);
-    hDir = getHeight(root->right);
-    altura = hEsq > hDir ? hEsq + 1 : hDir + 1;
 
-    return altura;
+    leftH = getHeight(root->left);
+    rightH = getHeight(root->right);
+    height = leftH > rightH ? leftH + 1 : rightH + 1;
+
+    return height;
 }
 
 void removeValue(tree *root, int valueDeleted){
 }
 
 void printInOrder(tree* root){
-    if (!(root == NULL)){
+    if (root != NULL){
         printInOrder(root->left);
-        printf("%d\t", root->value);
+        printf("%d ", root->value);
         printInOrder(root->right);
     }
 }
 
-void printPreOrder(tree* root){
-    if (!(root == NULL)){
-        printf("%d\t", root->value);
+void printPreOrder(tree *root){
+    if (root != NULL){
+        printf("%d ", root->value);
         printPreOrder(root->left);
         printPreOrder(root->right);
     }
@@ -157,10 +160,9 @@ void balanceTree(tree *root){
 }
 
 void menu(){
-    LIMPA_TELA;
-    printf("==================== MENU =========================\n");
-    printf("0 - Exit\n");
+    printf("\n==================== MENU =========================\n");
     printf("Choose one of the options below: \n");
+    printf("0 - EXIT\n");
     printf("1 - Load tree from file\n");
     printf("2 - Show tree\n");
     printf("3 - Is full\n");
