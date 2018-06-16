@@ -63,26 +63,42 @@ tree *loadTreeFromFile(char *fileName){
     return root;
 }
 
-void showTree(tree *root){
-    if (root != NULL){
-        printf("%d ", root->value);
-        showTree(root->left);
-        showTree(root->right);
-    }
+void print(tree *root, int level){
+     int i;
+     if(root == NULL)
+        return;
+     print(root->right, level+1);
+     for(i=0;i<level;i++)
+        printf("      ");
+     printf("%6d\n\n",root->value);
+     print(root->left,level+1);
 }
 
-int isFull(tree *root){
+void showTree(tree *root){
+    print(root, 0);
+}
+
+int checksIsFull(tree *root){
     if(root == NULL)
-        return 1;
+        return 0;
     if(root->left == NULL && root->right == NULL)
         return 1;
     if((root->left) && (root->right))
-        return (isFull(root->left) && isFull(root->right));
-
-    return 0;
+        return (checksIsFull(root->left) && checksIsFull(root->right));
+    return 2;
 }
 
+void isFull(tree *root){
+    if(checksIsFull(root) == 1)
+        printf("Tree is full!\n");
+    else if(checksIsFull == 0)
+        printf("Tree is empty!\n");
+    else 
+        printf("Tree is not full\n");
+}   
+
 void searchValue(tree *root, int value){
+    int level;
     if (root != NULL){
         if(value == root->value){
             printf("Root Node\n");
@@ -90,28 +106,30 @@ void searchValue(tree *root, int value){
         }
         else if((root->left != NULL) && value < root->value){
             if(root->left->value == value){
+                level++;
                 printf("Dad: %d\n",root->value);
                 if(root->right != NULL)
                     printf("Brother: %d\n", root->right->value);
                 else
-                    printf("This node doesn't have brother\n");
+                    printf("This value doesn't have brother\n");
                 return;
             }
             searchValue(root->left, value);
         }
         else if((root->right != NULL)){
             if(root->right->value == value){
+                level++;
                 printf("Dad: %d\n",root->value);
                 if(root->left != NULL)
                     printf("Brother: %d\n", root->left->value);
                 else
-                    printf("This node doesn't have brother\n");
+                    printf("This value doesn't have brother\n");
                 return;
             }
             searchValue(root->right, value);
         }
         else
-            printf("Node not found in the tree\n");
+            printf("This value is not in the tree!\n");
     }
 }
 

@@ -30,12 +30,13 @@ int main() {
 
             case 3:
                 system("clear");
-                if(isFull(raiz) == 1){
-                    printf("Tree is full");
-                }
-                else{
-                    printf("Tree is not full");
-                }
+                isFull(raiz);
+              //(isFull(raiz) == 1){
+              //    printf("Tree is full");
+              //}
+              //else{
+              //    printf("Tree is not full");
+              //}
                 break;
 
             case 4:
