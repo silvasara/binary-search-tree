@@ -31,7 +31,6 @@ tree *createsNew(int fileNumber){
   return new;
 }
 
-
 tree *insert(tree *root, tree *new){
     if(root == NULL)
         return new;
@@ -57,14 +56,15 @@ tree *loadTreeFromFile(char *fileName){
   else{
     totalOfNumbersInFile = readNumbers(archive);
     fileNumbers = calloc(totalOfNumbersInFile, sizeof(int));
+    rewind(archive);
     for(int i = 0 ; i<totalOfNumbersInFile;i++){
       fscanf(archive, "%d ", &fileNumbers[i]);
-      printf("%d\n", fileNumbers[i] );
     }
     fclose(archive);
     for(int i = 0; i < totalOfNumbersInFile; i++){
       new = createsNew(fileNumbers[i]);
       root = insert(root, new);
+      printf("%d\n", fileNumbers[i] );
     }
   }
 
