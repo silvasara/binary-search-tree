@@ -2,7 +2,7 @@
 #include "functions.c"
 
 int main() {
-    int option; 
+    int option;
     char userFileName[100], *fileName;
     tree *raiz = NULL;
 

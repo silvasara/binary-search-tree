@@ -5,7 +5,7 @@ typedef struct tree{
 }tree;
 
 FILE* openArchive(char *);
-void readNumbers(FILE *, int *);
+int readNumbers(FILE *);
 tree* createNewNode(int);
 tree* insert(tree *, tree *);
 tree* loadTreeFromFile(char *);
