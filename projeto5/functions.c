@@ -12,20 +12,23 @@ FILE *openArchive(char *fileName){
     return archive;
 }
 
-void readNumbers(FILE *archive, int *fileNumbers){
+int readNumbers(FILE *archive){
     rewind(archive);
+    int number,count=0;
 
-    for(int i = 0; i < 10; i++)
-        fscanf(archive, "%d ", &fileNumbers[i]);
+    while(!feof(archive)){
+      fscanf(archive, "%d ", &number);
+      count++;
+    }
+    return count;
 }
-
 tree *createsNew(int fileNumber){
-    tree *new = (tree*) malloc(sizeof(tree));
-    new->value = fileNumber;
-    new->left = NULL;
-    new->right = NULL;
+  tree *new = (tree*) malloc(sizeof(tree));
+  new->value = fileNumber;
+  new->left = NULL;
+  new->right = NULL;
 
-    return new;
+  return new;
 }
 
 tree *insert(tree *root, tree *new){
@@ -40,27 +43,32 @@ tree *insert(tree *root, tree *new){
 }
 
 tree *loadTreeFromFile(char *fileName){
-    FILE *archive;
-    tree *root = NULL, *new = NULL;
-    int totalOfNumbersInFile, *fileNumbers = NULL;
+  FILE *archive;
+  tree *root = NULL, *new = NULL;
+  int totalOfNumbersInFile, *fileNumbers = NULL;
 
-    archive = openArchive(fileName);
+  archive = openArchive(fileName);
 
-    if(archive == NULL){
-        printf("Cannot open file!");
-        getchar();
+  if(archive == NULL){
+    printf("Cannot open file!");
+    getchar();
+  }
+  else{
+    totalOfNumbersInFile = readNumbers(archive);
+    fileNumbers = calloc(totalOfNumbersInFile, sizeof(int));
+    rewind(archive);
+    for(int i = 0 ; i<totalOfNumbersInFile;i++){
+      fscanf(archive, "%d ", &fileNumbers[i]);
     }
-    else{
-        fileNumbers = calloc(totalOfNumbersInFile, sizeof(int));
-        readNumbers(archive, fileNumbers);
-        fclose(archive);
-        for(int i = 0; i < 10; i++){
-            new = createsNew(fileNumbers[i]);
-            root = insert(root, new);
-        }
+    fclose(archive);
+    for(int i = 0; i < totalOfNumbersInFile; i++){
+      new = createsNew(fileNumbers[i]);
+      root = insert(root, new);
+      printf("%d\n", fileNumbers[i] );
     }
+  }
 
-    return root;
+  return root;
 }
 
 void print(tree *root, int level){
@@ -93,9 +101,9 @@ void isFull(tree *root){
         printf("Tree is full!\n");
     else if(checksIsFull == 0)
         printf("Tree is empty!\n");
-    else 
+    else
         printf("Tree is not full\n");
-}   
+}
 
 void searchValue(tree *root, int value){
     int level;
