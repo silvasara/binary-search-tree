@@ -6,10 +6,10 @@ typedef struct tree{
 
 typedef struct BST {
     struct BST *left, *right;
-    int branch;      //length of the branch from this node to its children
+    int branch;
     int height;
     int element;
-    int type;        // -1 if is left, 0 if is root, 1 if right
+    int type;        
     char label[11];
 }BST;
 
@@ -28,10 +28,17 @@ void showTree(tree *);
 int checksIsFull(tree *);
 void isFull(tree *);
 void searchValue(tree *, int);
-int getHeight(tree *);
+int calculateHeight(tree *);
+void getHeight(tree *);
 void removeValue(tree *, int);
 void printInOrder(tree *);
 void printPreOrder(tree *);
 void printPostOrder(tree *);
+int getBalanceFactor(tree *);
+tree *rotateRight(tree *t);
+tree *rotateLeft(tree *t);
+tree *rotateLeftRight(tree *t);
+tree *rotateRightLeft(tree *t);
+tree *balance(tree *t, tree *root);
 void balanceTree(tree *);
 void menu();

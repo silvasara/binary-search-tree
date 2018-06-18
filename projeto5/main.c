@@ -43,7 +43,7 @@ int main() {
 
             case 5:
                 system("clear");
-                printf("Tree height: %d", getHeight(root));
+                getHeight(root);
                 break;
 
             case 6:
@@ -71,7 +71,7 @@ int main() {
 
             case 10:
                 system("clear");
-                balanceTree(root);          
+                balanceTree(root);
                 break;
         }
     }while(option != 0);

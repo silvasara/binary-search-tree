@@ -11,7 +11,7 @@
 
 int left[MAX_HEIGHT];
 int right[MAX_HEIGHT];
-int gap = 3;
+int space = 3;
 int printNext;
 
 FILE *openArchive(char *fileName){
@@ -60,7 +60,7 @@ tree *loadTreeFromFile(char *fileName){
     archive = openArchive(fileName);
 
     if(archive == NULL){
-        printf("Cannot open file!");
+        printf("Can not open file!\n");
         getchar();
     }
     else{
@@ -74,7 +74,6 @@ tree *loadTreeFromFile(char *fileName){
         for(int i = 0; i < totalOfNumbersInFile; i++){
             new = createsNew(fileNumbers[i]);
             root = insert(root, new);
-            printf("%d\n", fileNumbers[i] );
         }
     }
 
@@ -122,8 +121,8 @@ void getLeft(BST *node, int x, int y) {
 void getRight(BST *node, int x, int y) {
     if (node == NULL)
         return;
-    int notLeft = (node->type != -1);
-    right[y] = MAX(right[y], x + ((node->element - notLeft) / 2));
+    int ttLeft = (node->type != -1);
+    right[y] = MAX(right[y], x + ((node->element - ttLeft) / 2));
 
     if (node->right != NULL) {
         for(int i = 1; i <= node->branch && y + i < MAX_HEIGHT; i++) {
@@ -144,9 +143,9 @@ void fillBranch(BST *node) {
     fillBranch(node->left);
     fillBranch(node->right);
 
-    if (node->right == NULL && node->left == NULL) {
+    if (node->right == NULL && node->left == NULL)
         node->branch = 0;
-    }
+    
     else {
         if (node->left != NULL) {
             for (int i = 0; i < node->left->height && i < MAX_HEIGHT; i++)
@@ -169,7 +168,7 @@ void fillBranch(BST *node) {
 
         delta = 4;
         for (int i = 0; i < heightMin; i++)
-            delta = MAX(delta, gap + 1 + right[i] - left[i]);
+            delta = MAX(delta, space + 1 + right[i] - left[i]);
 
         if (((node->left != NULL && node->left->height == 1) ||
                     (node->right != NULL && node->right->height == 1)) && delta > 4) {
@@ -271,18 +270,18 @@ int checksIsFull(tree *root){
 
 void isFull(tree *root){
     if(checksIsFull(root) == 1)
-        printf("tree is full!\n");
+        printf("Tree is full!\n");
     else if(checksIsFull == 0)
-        printf("tree is empty!\n");
+        printf("Tree is empty!\n");
     else
-        printf("tree is not full\n");
+        printf("Tree is not full\n");
 }
 
 void searchValue(tree *root, int value){
     int level;
     if (root != NULL){
         if(value == root->value){
-            printf("Root Node\n");
+            printf("Root node\n");
             return;
         }
         else if((root->left != NULL) && value < root->value){
@@ -314,20 +313,25 @@ void searchValue(tree *root, int value){
     }
 }
 
-int getHeight(tree *root){
+int calculateHeight(tree *root){
     int leftH, rightH, height;
 
-    if (root == NULL){
+    if (root == NULL)
         return 0;
-    }
 
-    leftH = getHeight(root->left);
-    rightH = getHeight(root->right);
+    leftH = calculateHeight(root->left);
+    rightH = calculateHeight(root->right);
     height = leftH > rightH ? leftH + 1 : rightH + 1;
 
     return height;
 }
 
+void getHeight(tree *root){
+    if(calculateHeight(root) == 0)
+      printf("Tree is empty\n");
+    else
+      printf("Tree height: %d\n", calculateHeight(root));
+}
 void removeValue(tree *root, int valueDeleted){
 }
 
@@ -355,7 +359,126 @@ void printPostOrder(tree *root){
     }
 }
 
+int getBalanceFactor(tree *t){
+  int factor = 0;
+
+  if(t->left)
+    factor += calculateHeight(t->left);
+  if(t->right)
+    factor -= calculateHeight(t->right);
+
+	return factor;
+}
+
+tree *rotateRight(tree *t){
+  tree *a = t;
+  tree *b = a->left;
+
+	a->left = b->right;
+	b->right = a;
+
+	return b;
+}
+
+tree *rotateLeft(tree *t){
+  tree *a = t;
+  tree *b = a->right;
+
+	a->right = b->left;
+	b->left = a;
+
+	return b;
+}
+
+tree *rotateLeftRight(tree *t){
+  tree *a = t;
+  tree *b = a->left;
+  tree *c = b->right;
+
+	a->left = c->right;
+	b->right = c->left;
+	c->left = b;
+	c->right = a;
+
+	return c;
+}
+
+tree *rotateRightLeft(tree *t){
+  tree *a = t;
+  tree *b = a->right;
+  tree *c = b->left;
+
+	a->right = c->left;
+	b->left = c->right;
+	c->right = b;
+	c->left = a;
+
+	return c;
+}
+
+tree *balance(tree *t, tree *root){
+  tree *aux = NULL;
+
+	if(t->left)
+		t->left  = balance(t->left, root);
+
+  if(t->right)
+		t->right = balance(t->right, root);
+
+	int factor = getBalanceFactor(t);
+
+	if(factor >= 2){
+		if(getBalanceFactor(t->left) <= -1){
+      printf("\nLeft right rotation\n");
+			aux = rotateLeftRight(t);
+      printInOrder(root);
+		}
+    else{
+      printf("\nRight rotation\n");
+			aux = rotateRight(t);
+      printInOrder(root);
+    }
+	}
+  else if(factor <= -2){
+		if(getBalanceFactor(t->right) >= 1){
+      printf("\nRight left rotation\n");
+			aux = rotateRightLeft(t);
+      printInOrder(root);
+		}
+    else{
+      printf("\nLeft rotation\t");
+			aux = rotateLeft(t);
+      printInOrder(root);
+    }
+	}
+  else
+		aux = t;
+
+	return aux;
+}
+
+int checkIsBalanced(tree *root) {
+  if (root == NULL)
+    return 2;
+
+  int value = abs(calculateHeight(root->right) - calculateHeight(root->left)) <= 1;
+  if(checkIsBalanced(root->right) == 0 && checkIsBalanced(root->left) == 0)
+    value = 0;
+
+  return value;
+}
+
 void balanceTree(tree *root){
+  tree *aux = NULL;
+  if (checkIsBalanced(root) == 0){
+      aux = balance(root, root);
+    	if(aux != root)
+    	   root = aux;
+  }
+  else if(checkIsBalanced(root) == 2)
+      printf("Empty tree\n");
+  else if(checkIsBalanced(root) == 1)
+      printf("Tree is already balanced\n");
 }
 
 void menu(){
