@@ -145,7 +145,7 @@ void fillBranch(BST *node) {
 
     if (node->right == NULL && node->left == NULL)
         node->branch = 0;
-    
+
     else {
         if (node->left != NULL) {
             for (int i = 0; i < node->left->height && i < MAX_HEIGHT; i++)
@@ -332,7 +332,140 @@ void getHeight(tree *root){
     else
       printf("Tree height: %d\n", calculateHeight(root));
 }
-void removeValue(tree *root, int valueDeleted){
+
+tree *removeValue(tree *root, int value){
+  tree *dad = NULL, *aux = root;
+  while (aux != NULL){
+    if (aux->value == value){
+      break;
+    }
+
+    dad = aux;
+    if (aux->value < value){
+      aux = dad->right;
+    }
+
+    else{
+      aux = dad->left;
+    }
+  }
+
+  if (aux == NULL){
+    printf("This value does not belong in this tree.\n");
+  }
+
+  else{
+    if (dad == NULL){
+      root = removeRoot(root);
+    }
+
+    else{
+      aux = verifyType(aux,dad);
+      free(aux);
+    }
+    printf("\nThe value has been removed.\n\n");
+  }
+  return root;
+}
+
+tree *removeRoot(tree *root){
+  tree *aux;
+  if (root->right != NULL || root->left != NULL)
+  {
+    if (root->right != NULL && root->left != NULL)
+    {
+      aux = findSuccessor(root);
+      free(aux);
+      return root;
+    }
+    else
+    {
+      if (root->right != NULL)
+      {
+        aux = root->right;
+        free(root);
+        return aux;
+      }
+      else
+      {
+        aux = root->left;
+        free(root);
+        return aux;
+      }
+    }
+  }
+  else
+  {
+    free(root);
+    return NULL;
+  }
+}
+
+tree *verifyType(tree *root, tree *dad){
+  if (root->right != NULL || root->left != NULL)
+  {
+    if (root->right != NULL && root->left != NULL)
+    {
+      return findSuccessor(root);
+    }
+    else
+    {
+      if (root->right != NULL)
+      {
+        if (dad->right == root)
+        {
+          dad->right = root->right;
+          return root;
+        }
+        else
+        {
+          dad->left = root->right;
+          return root;
+        }
+      }
+      else
+      {
+        if (dad->right == root)
+        {
+          dad->right = root->left;
+          return root;
+        }
+        else
+        {
+          dad->left = root->left;
+          return root;
+        }
+      }
+    }
+  }
+  else
+  {
+    if (dad->value < root->value)
+    {
+      dad->right = NULL;
+    }
+    else
+    {
+      dad->left = NULL;
+    }
+    return root;
+  }
+}
+
+tree *findSuccessor(tree *root){
+    tree *successor, *dad, *aux;
+    int value;
+    successor = root->right;
+    dad = root;
+    while (successor->left != NULL)
+    {
+      dad = successor;
+      successor = dad->left;
+    }
+    value = successor->value;
+    aux = verifyType(successor,dad);
+    root->value = value;
+    return aux;
 }
 
 void printInOrder(tree* root){

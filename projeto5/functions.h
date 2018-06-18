@@ -9,7 +9,7 @@ typedef struct BST {
     int branch;
     int height;
     int element;
-    int type;        
+    int type;
     char label[11];
 }BST;
 
@@ -30,7 +30,10 @@ void isFull(tree *);
 void searchValue(tree *, int);
 int calculateHeight(tree *);
 void getHeight(tree *);
-void removeValue(tree *, int);
+tree *removeValue(tree *, int);
+tree *removeRoot(tree *);
+tree *verifyType(tree *, tree *);
+tree *findSuccessor(tree *);
 void printInOrder(tree *);
 void printPreOrder(tree *);
 void printPostOrder(tree *);

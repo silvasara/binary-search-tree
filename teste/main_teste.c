@@ -4,7 +4,8 @@
 int main() {
     int option;
     char userFileName[100], *fileName;
-    tree *root = NULL;
+    tree *raiz = NULL;
+
 
     do{
         menu();
@@ -17,7 +18,7 @@ int main() {
                 int size = strlen(userFileName);
                 fileName = calloc((size-1), sizeof(char));
                 strncpy(fileName, userFileName, (size-1));
-                root = loadTreeFromFile(fileName);
+                raiz = loadTreeFromFile(fileName);
 
                 free(fileName);
 
@@ -25,12 +26,17 @@ int main() {
 
             case 2:
                 system("clear");
-                showTree(root);
+                showTree(raiz);
                 break;
 
             case 3:
                 system("clear");
-                isFull(root);
+                if(isFull(raiz) == 1){
+                    printf("Tree is full");
+                }
+                else{
+                    printf("Tree is not full");
+                }
                 break;
 
             case 4:
@@ -38,12 +44,12 @@ int main() {
                 printf("Enter the value you would like to search: ");
                 int value;
                 scanf("%d", &value);
-                searchValue(root, value);
+                searchValue(raiz, value);
                 break;
 
             case 5:
                 system("clear");
-                getHeight(root);
+                printf("Tree height: %d", getHeight(raiz));
                 break;
 
             case 6:
@@ -52,30 +58,30 @@ int main() {
                 int valueD;
                 scanf("%d", &valueD);
                 getchar();
-                root = removeValue(root, valueD);
+                remove_value(raiz, value);
                 break;
 
             case 7:
                 system("clear");
-                printInOrder(root);
+                printInOrder(raiz);
                 break;
 
             case 8:
                 system("clear");
-                printPreOrder(root);
+                printPreOrder(raiz);
                 break;
 
             case 9:
                 system("clear");
-                printPostOrder(root);
+                printPostOrder(raiz);
                 break;
 
             case 10:
                 system("clear");
-                balanceTree(root);
+                balanceTree(raiz);
                 break;
         }
-    }
-    while(option != 0);
+    }while(option != 0);
+
     return 0;
 }
