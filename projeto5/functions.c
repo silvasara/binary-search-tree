@@ -22,13 +22,16 @@ FILE *openArchive(char *fileName){
     return archive;
 }
 
-void readNumbers(FILE *archive, int *fileNumbers){
+int readNumbers(FILE *archive){
     rewind(archive);
+    int number,count=0;
 
-    for(int i = 0; i < 10; i++)
-        fscanf(archive, "%d ", &fileNumbers[i]);
+    while(!feof(archive)){
+        fscanf(archive, "%d ", &number);
+        count++;
+    }
+    return count;
 }
-
 tree *createsNew(int fileNumber){
     tree *new = (tree*) malloc(sizeof(tree));
     new->value = fileNumber;
@@ -61,12 +64,17 @@ tree *loadTreeFromFile(char *fileName){
         getchar();
     }
     else{
+        totalOfNumbersInFile = readNumbers(archive);
         fileNumbers = calloc(totalOfNumbersInFile, sizeof(int));
-        readNumbers(archive, fileNumbers);
+        rewind(archive);
+        for(int i = 0 ; i<totalOfNumbersInFile;i++){
+            fscanf(archive, "%d ", &fileNumbers[i]);
+        }
         fclose(archive);
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < totalOfNumbersInFile; i++){
             new = createsNew(fileNumbers[i]);
             root = insert(root, new);
+            printf("%d\n", fileNumbers[i] );
         }
     }
 
@@ -76,7 +84,7 @@ tree *loadTreeFromFile(char *fileName){
 BST *createsBSTRecursive(tree *t) {
     BST *node;
     if (t == NULL)
-      return NULL;
+        return NULL;
 
     node = malloc(sizeof(BST));
     node->left = createsBSTRecursive(t->left);
@@ -96,7 +104,7 @@ BST *createsBSTRecursive(tree *t) {
 
 void getLeft(BST *node, int x, int y) {
     if (node == NULL)
-      return;
+        return;
 
     int isLeft = (node->type == -1);
     left[y] = MIN(left[y], x - ((node->element - isLeft) / 2));
@@ -113,7 +121,7 @@ void getLeft(BST *node, int x, int y) {
 
 void getRight(BST *node, int x, int y) {
     if (node == NULL)
-      return;
+        return;
     int notLeft = (node->type != -1);
     right[y] = MAX(right[y], x + ((node->element - notLeft) / 2));
 
@@ -164,7 +172,7 @@ void fillBranch(BST *node) {
             delta = MAX(delta, gap + 1 + right[i] - left[i]);
 
         if (((node->left != NULL && node->left->height == 1) ||
-             (node->right != NULL && node->right->height == 1)) && delta > 4) {
+                    (node->right != NULL && node->right->height == 1)) && delta > 4) {
             delta--;
         }
 
