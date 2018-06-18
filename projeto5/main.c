@@ -75,7 +75,7 @@ int main() {
                 balanceTree(root);
                 break;
         }
-    }while(option != 0);
-
+    }
+    while(option != 0);
     return 0;
 }
