@@ -4,16 +4,35 @@ typedef struct tree{
     struct tree *left;
 }tree;
 
+typedef struct BST {
+    struct BST *left, *right;
+    int branch;      //length of the branch from this node to its children
+    int height;
+    int element;
+    int type;        // -1 if is left, 0 if is root, 1 if right
+    char label[11];
+}BST;
+
 FILE* openArchive(char *);
-void readNumbers(FILE *, int *);
+int readNumbers(FILE *);
 tree* createNewNode(int);
 tree* insert(tree *, tree *);
-tree* loadTreeFromFile(char *);
+tree *loadTreeFromFile(char *);
+BST *createsBSTRecursive(tree *t);
+void getLeft(BST *, int , int );
+void getRight(BST *node, int , int);
+void fillBranch(BST *);
+void printLevel(BST *, int , int);
+void freeBST(BST *);
 void showTree(tree *);
-int isFull(tree *);
+int checksIsFull(tree *);
+void isFull(tree *);
 void searchValue(tree *, int);
 int getHeight(tree *);
-void removeValue(tree *, int);
+tree *removeValue(tree *, int);
+tree *removeRoot(tree *);
+tree *verifyType(tree *, tree *);
+tree *findSuccessor(tree *);
 void printInOrder(tree *);
 void printPreOrder(tree *);
 void printPostOrder(tree *);
