@@ -95,7 +95,7 @@ BST *createsBSTRecursive(tree *t) {
     if (node->right != NULL)
         node->right->type = 1;
 
-    sprintf(node->label, "%d", t->value);
+    sprintf(node->label, "   %d", t->value);
     node->element = strlen(node->label);
 
     return node;
@@ -207,7 +207,7 @@ void printLevel(BST *node, int x, int level) {
                 printf(" ");
 
             printNext += i;
-            printf("/");
+            printf(" /");
             printNext++;
         }
         if (node->right != NULL) {
@@ -271,7 +271,7 @@ int checksIsFull(tree *root){
 void isFull(tree *root){
     if(checksIsFull(root) == 1)
         printf("Tree is full!\n");
-    else if(checksIsFull == 0)
+    else if(checksIsFull(root) == 0)
         printf("Tree is empty!\n");
     else
         printf("Tree is not full\n");
