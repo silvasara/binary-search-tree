@@ -285,15 +285,20 @@ void isFull(tree* root){
 }
 
 void searchValue(tree *root, int value){
-    int level;
+    int treeHeight = calculateHeight(root);
+    getValue(root, value, treeHeight);
+}
+
+void getValue(tree *root, int value, int treeHeight){
     if (root != NULL){
         if(value == root->value){
             printf("Root node\n");
+            printf("This node is in level 0\n");
             return;
         }
         else if((root->left != NULL) && value < root->value){
             if(root->left->value == value){
-                level++;
+                printf("This node is in leve %d\n", treeHeight - calculateHeight(root->left));
                 printf("Dad: %d\n",root->value);
                 if(root->right != NULL)
                     printf("Brother: %d\n", root->right->value);
@@ -301,11 +306,11 @@ void searchValue(tree *root, int value){
                     printf("This value doesn't have brother\n");
                 return;
             }
-            searchValue(root->left, value);
+            getValue(root->left, value, treeHeight);
         }
         else if((root->right != NULL)){
             if(root->right->value == value){
-                level++;
+                printf("This node is in leve %d\n", treeHeight - calculateHeight(root->right));
                 printf("Dad: %d\n",root->value);
                 if(root->left != NULL)
                     printf("Brother: %d\n", root->left->value);
@@ -313,7 +318,7 @@ void searchValue(tree *root, int value){
                     printf("This value doesn't have brother\n");
                 return;
             }
-            searchValue(root->right, value);
+            getValue(root->right, value, treeHeight);
         }
         else
             printf("This value is not in the tree!\n");

@@ -28,6 +28,7 @@ void showTree(tree *);
 bool checksIsFull(tree *);
 void isFull(tree *);
 void searchValue(tree *, int);
+void getValue(tree *, int, int);
 int calculateHeight(tree *);
 void getHeight(tree *);
 tree *removeValue(tree *, int);
