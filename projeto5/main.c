@@ -72,7 +72,7 @@ int main() {
 
             case 10:
                 system("clear");
-                balanceTree(root);
+                root = balanceTree(root);
                 break;
         }
     }

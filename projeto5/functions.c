@@ -278,10 +278,10 @@ bool checkisFull(tree* root){ //default bool: false
 
 void isFull(tree* root){
 
-  if(checkisFull(root))
-    printf("The tree is full.\n");
-  else
-    printf("The tree is not full.\n");
+    if(checkisFull(root))
+        printf("The tree is full.\n");
+    else
+        printf("The tree is not full.\n");
 }
 
 void searchValue(tree *root, int value){
@@ -335,128 +335,128 @@ int calculateHeight(tree *root){
 
 void getHeight(tree *root){
     if(calculateHeight(root) == 0)
-      printf("Tree is empty\n");
+        printf("Tree is empty\n");
     else
-      printf("Tree height: %d\n", calculateHeight(root));
+        printf("Tree height: %d\n", calculateHeight(root));
 }
 
 tree *removeValue(tree *root, int value){
-  tree *dad = NULL, *aux = root;
-  while (aux != NULL){
-    if (aux->value == value){
-      break;
+    tree *dad = NULL, *aux = root;
+    while (aux != NULL){
+        if (aux->value == value){
+            break;
+        }
+
+        dad = aux;
+        if (aux->value < value){
+            aux = dad->right;
+        }
+
+        else{
+            aux = dad->left;
+        }
     }
 
-    dad = aux;
-    if (aux->value < value){
-      aux = dad->right;
-    }
-
-    else{
-      aux = dad->left;
-    }
-  }
-
-  if (aux == NULL){
-    printf("This value does not belong in this tree.\n");
-  }
-
-  else{
-    if (dad == NULL){
-      root = removeRoot(root);
+    if (aux == NULL){
+        printf("This value does not belong in this tree.\n");
     }
 
     else{
-      aux = verifyType(aux,dad);
-      free(aux);
+        if (dad == NULL){
+            root = removeRoot(root);
+        }
+
+        else{
+            aux = verifyType(aux,dad);
+            free(aux);
+        }
+        printf("\nThe value has been removed.\n\n");
     }
-    printf("\nThe value has been removed.\n\n");
-  }
-  return root;
+    return root;
 }
 
 tree *removeRoot(tree *root){
-  tree *aux;
-  if (root->right != NULL || root->left != NULL)
-  {
-    if (root->right != NULL && root->left != NULL)
+    tree *aux;
+    if (root->right != NULL || root->left != NULL)
     {
-      aux = findSuccessor(root);
-      free(aux);
-      return root;
+        if (root->right != NULL && root->left != NULL)
+        {
+            aux = findSuccessor(root);
+            free(aux);
+            return root;
+        }
+        else
+        {
+            if (root->right != NULL)
+            {
+                aux = root->right;
+                free(root);
+                return aux;
+            }
+            else
+            {
+                aux = root->left;
+                free(root);
+                return aux;
+            }
+        }
     }
     else
     {
-      if (root->right != NULL)
-      {
-        aux = root->right;
         free(root);
-        return aux;
-      }
-      else
-      {
-        aux = root->left;
-        free(root);
-        return aux;
-      }
+        return NULL;
     }
-  }
-  else
-  {
-    free(root);
-    return NULL;
-  }
 }
 
 tree *verifyType(tree *root, tree *dad){
-  if (root->right != NULL || root->left != NULL)
-  {
-    if (root->right != NULL && root->left != NULL)
+    if (root->right != NULL || root->left != NULL)
     {
-      return findSuccessor(root);
-    }
-    else
-    {
-      if (root->right != NULL)
-      {
-        if (dad->right == root)
+        if (root->right != NULL && root->left != NULL)
         {
-          dad->right = root->right;
-          return root;
+            return findSuccessor(root);
         }
         else
         {
-          dad->left = root->right;
-          return root;
+            if (root->right != NULL)
+            {
+                if (dad->right == root)
+                {
+                    dad->right = root->right;
+                    return root;
+                }
+                else
+                {
+                    dad->left = root->right;
+                    return root;
+                }
+            }
+            else
+            {
+                if (dad->right == root)
+                {
+                    dad->right = root->left;
+                    return root;
+                }
+                else
+                {
+                    dad->left = root->left;
+                    return root;
+                }
+            }
         }
-      }
-      else
-      {
-        if (dad->right == root)
-        {
-          dad->right = root->left;
-          return root;
-        }
-        else
-        {
-          dad->left = root->left;
-          return root;
-        }
-      }
-    }
-  }
-  else
-  {
-    if (dad->value < root->value)
-    {
-      dad->right = NULL;
     }
     else
     {
-      dad->left = NULL;
+        if (dad->value < root->value)
+        {
+            dad->right = NULL;
+        }
+        else
+        {
+            dad->left = NULL;
+        }
+        return root;
     }
-    return root;
-  }
 }
 
 tree *findSuccessor(tree *root){
@@ -466,8 +466,8 @@ tree *findSuccessor(tree *root){
     dad = root;
     while (successor->left != NULL)
     {
-      dad = successor;
-      successor = dad->left;
+        dad = successor;
+        successor = dad->left;
     }
     value = successor->value;
     aux = verifyType(successor,dad);
@@ -500,125 +500,115 @@ void printPostOrder(tree *root){
 }
 
 int getBalanceFactor(tree *t){
-  int factor = 0;
+    int factor = 0;
 
-  if(t->left)
-    factor += calculateHeight(t->left);
-  if(t->right)
-    factor -= calculateHeight(t->right);
+    if(t->left)
+        factor += calculateHeight(t->left);
+    if(t->right)
+        factor -= calculateHeight(t->right);
 
-	return factor;
+    return factor;
 }
 
 tree *rotateRight(tree *t){
-  tree *a = t;
-  tree *b = a->left;
+    tree *a = t;
+    tree *b = a->left;
 
-	a->left = b->right;
-	b->right = a;
+    a->left = b->right;
+    b->right = a;
 
-	return b;
+    return b;
 }
 
 tree *rotateLeft(tree *t){
-  tree *a = t;
-  tree *b = a->right;
+    tree *a = t;
+    tree *b = a->right;
 
-	a->right = b->left;
-	b->left = a;
+    a->right = b->left;
+    b->left = a;
 
-	return b;
+    return b;
 }
 
 tree *rotateLeftRight(tree *t){
-  tree *a = t;
-  tree *b = a->left;
-  tree *c = b->right;
+    tree *a = t;
+    tree *b = a->left;
+    tree *c = b->right;
 
-	a->left = c->right;
-	b->right = c->left;
-	c->left = b;
-	c->right = a;
+    a->left = c->right;
+    b->right = c->left;
+    c->left = b;
+    c->right = a;
 
-	return c;
+    return c;
 }
 
 tree *rotateRightLeft(tree *t){
-  tree *a = t;
-  tree *b = a->right;
-  tree *c = b->left;
+    tree *a = t;
+    tree *b = a->right;
+    tree *c = b->left;
 
-	a->right = c->left;
-	b->left = c->right;
-	c->right = b;
-	c->left = a;
+    a->right = c->left;
+    b->left = c->right;
+    c->right = b;
+    c->left = a;
 
-	return c;
+    return c;
 }
 
-tree *balance(tree *t, tree *root){
-  tree *aux = NULL;
+tree *balance(tree *t){
+    tree *aux = NULL;
 
-	if(t->left)
-		t->left  = balance(t->left, root);
+    if(t->left)
+        t->left  = balance(t->left);
 
-  if(t->right)
-		t->right = balance(t->right, root);
+    if(t->right)
+        t->right = balance(t->right);
 
-	int factor = getBalanceFactor(t);
+    int factor = getBalanceFactor(t);
 
-	if(factor >= 2){
-		if(getBalanceFactor(t->left) <= -1){
-      printf("\nLeft right rotation\n");
-			aux = rotateLeftRight(t);
-      printInOrder(root);
-		}
-    else{
-      printf("\nRight rotation\n");
-			aux = rotateRight(t);
-      printInOrder(root);
+    if(factor >= 2){
+        if(getBalanceFactor(t->left) <= -1)
+            aux = rotateLeftRight(t);
+
+        else
+            aux = rotateRight(t);
     }
-	}
-  else if(factor <= -2){
-		if(getBalanceFactor(t->right) >= 1){
-      printf("\nRight left rotation\n");
-			aux = rotateRightLeft(t);
-      printInOrder(root);
-		}
-    else{
-      printf("\nLeft rotation\t");
-			aux = rotateLeft(t);
-      printInOrder(root);
+    else if(factor <= -2){
+        if(getBalanceFactor(t->right) >= 1)
+            aux = rotateRightLeft(t);
+        else
+            aux = rotateLeft(t);
     }
-	}
-  else
-		aux = t;
+    else
+        aux = t;
 
-	return aux;
+    return aux;
 }
 
 int checkIsBalanced(tree *root) {
-  if (root == NULL)
-    return 2;
+    if (root == NULL)
+        return 2;
 
-  int value = abs(calculateHeight(root->right) - calculateHeight(root->left)) <= 1;
-  if(checkIsBalanced(root->right) == 0 && checkIsBalanced(root->left) == 0)
-    value = 0;
+    int value = abs(calculateHeight(root->left) - calculateHeight(root->right)) <= 1;
+    if(checkIsBalanced(root->left) == 0 && checkIsBalanced(root->right) == 0)
+        value = 0;
 
-  return value;
+    return value;
 }
 
-void balanceTree(tree *root){
-  tree *aux = NULL;
-  if (checkIsBalanced(root) == 0){
-      aux = balance(root, root);
-    	if(aux != root)
-    	   root = aux;
-  }
-  else if(checkIsBalanced(root) == 2)
-      printf("Empty tree\n");
-  else if(checkIsBalanced(root) == 1)
-      printf("Tree is already balanced\n");
+tree *balanceTree(tree *root){
+    tree *aux = NULL;
+
+    if (checkIsBalanced(root) == 0){
+        aux = balance(root);
+        if(aux != root)
+            root = aux;
+    }
+    else if(checkIsBalanced(root) == 1)
+        printf("Tree is already balanced\n");
+
+    return root;
 }
 
 void menu(){

@@ -42,6 +42,6 @@ tree *rotateRight(tree *t);
 tree *rotateLeft(tree *t);
 tree *rotateLeftRight(tree *t);
 tree *rotateRightLeft(tree *t);
-tree *balance(tree *t, tree *root);
-void balanceTree(tree *);
+tree *balance(tree *t);
+tree *balanceTree(tree *);
 void menu();
