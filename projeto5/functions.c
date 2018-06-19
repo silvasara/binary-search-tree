@@ -276,12 +276,22 @@ bool checkisFull(tree* root){ //default bool: false
     return false;
 }
 
+<<<<<<< HEAD
 void isFull(tree* root){
 
   if(checkisFull(root))
     printf("The tree is full.\n");
   else
     printf("The tree is not full.\n");
+=======
+void isFull(tree *root){
+    if(checksIsFull(root) == 1)
+        printf("Tree is full!\n");
+    else if(checksIsFull(root) == 0)
+        printf("Tree is empty!\n");
+    else
+        printf("Tree is not full\n");
+>>>>>>> cbbe31e3c1cdac9bcf99e1067961a8da2f0b79e1
 }
 
 void searchValue(tree *root, int value){
